@@ -2,6 +2,7 @@ find_package(Qt5 5.2.0 COMPONENTS Widgets OpenGL Network Sql PrintSupport REQUIR
 
 find_package(TypeSafe REQUIRED)
 find_package(DelaunayTriangulation REQUIRED)
+find_package(Optional REQUIRED)
 
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
@@ -356,6 +357,7 @@ target_link_libraries(librepcb_common
     Qt::PrintSupport
     TypeSafe::TypeSafe
     DelaunayTriangulation::DelaunayTriangulation
+    Optional::Optional
 )
 
 # Alias to namespaced variant
