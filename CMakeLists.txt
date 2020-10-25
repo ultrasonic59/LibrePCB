@@ -1,0 +1,41 @@
+# CMake version configuration
+# (Note: The minimal version 3.5 is shipped with Ubuntu 16.04)
+cmake_minimum_required(VERSION 3.5...3.19)
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
+# Define project
+project(librepcb
+    VERSION 0.1.5
+    LANGUAGES CXX
+)
+
+# Configure module path
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
+# Global options
+option(UNBUNDLE_ALL "Don't use any vendored library." OFF)
+
+# Create a release build by default
+include(DefaultBuildType)
+
+# Auto-include current directory
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Require out-of-source builds
+file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
+if(EXISTS "${LOC_PATH}")
+    message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
+endif()
+
+# Use C++11
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Add libs
+add_subdirectory(libs/librepcb/common)
+
+# Add apps
+#add_subdirectory(apps/librepcb)
