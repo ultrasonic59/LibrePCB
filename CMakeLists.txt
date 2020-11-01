@@ -15,6 +15,7 @@ project(librepcb
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 # Global options
+option(UNBUNDLE_QUAZIP "Don't use vendored QuaZip library." OFF)
 option(UNBUNDLE_ALL "Don't use any vendored library." OFF)
 
 # Create a release build by default
