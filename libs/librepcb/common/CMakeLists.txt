@@ -1,10 +1,3 @@
-find_package(Qt5 5.2.0 COMPONENTS Widgets OpenGL Network Sql PrintSupport REQUIRED)
-
-find_package(TypeSafe REQUIRED)
-find_package(DelaunayTriangulation REQUIRED)
-find_package(Optional REQUIRED)
-find_package(QuaZip REQUIRED)
-
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -351,11 +344,11 @@ add_library(librepcb_common
 )
 target_include_directories(librepcb_common PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_common
-    Qt::Widgets
-    Qt::OpenGL
     Qt::Network
-    Qt::Sql
+    Qt::OpenGL
     Qt::PrintSupport
+    Qt::Sql
+    Qt::Widgets
     TypeSafe::TypeSafe
     DelaunayTriangulation::DelaunayTriangulation
     Optional::Optional
