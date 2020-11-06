@@ -349,6 +349,7 @@ target_link_libraries(librepcb_common
     DelaunayTriangulation::DelaunayTriangulation
     Optional::Optional
     QuaZip::QuaZip
+    MuParser::MuParser
 
     # Qt
     Qt::Network
