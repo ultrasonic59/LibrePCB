@@ -350,6 +350,7 @@ target_link_libraries(librepcb_common
     Optional::Optional
     QuaZip::QuaZip
     MuParser::MuParser
+    Polyclipping::Polyclipping
 
     # Qt
     Qt::Network

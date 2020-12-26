@@ -16,6 +16,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 # Global options
 option(UNBUNDLE_MUPARSER "Don't use vendored MuParser library." OFF)
+option(UNBUNDLE_POLYCLIPPING "Don't use vendored Polyclipping library." OFF)
 option(UNBUNDLE_QUAZIP "Don't use vendored QuaZip library." OFF)
 option(UNBUNDLE_ALL "Don't use any vendored library." OFF)
 
@@ -48,6 +49,7 @@ find_package(DelaunayTriangulation REQUIRED)
 find_package(Optional REQUIRED)
 find_package(QuaZip REQUIRED)
 find_package(MuParser REQUIRED)
+find_package(Polyclipping REQUIRED)
 
 # Add libs
 add_subdirectory(libs/librepcb/common)
