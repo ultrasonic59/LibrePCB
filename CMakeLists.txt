@@ -41,7 +41,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Find required Qt packages
-find_package(Qt5 5.2.0 COMPONENTS Widgets OpenGL Network Sql Svg PrintSupport REQUIRED)
+find_package(Qt5 5.2.0 COMPONENTS Widgets Gui OpenGL Network Sql Svg PrintSupport REQUIRED)
 
 # Find third party libraries
 find_package(TypeSafe REQUIRED)
@@ -61,4 +61,4 @@ add_subdirectory(libs/librepcb/libraryeditor)
 add_subdirectory(libs/librepcb/librarymanager)
 
 # Add apps
-#add_subdirectory(apps/librepcb)
+add_subdirectory(apps/librepcb)
