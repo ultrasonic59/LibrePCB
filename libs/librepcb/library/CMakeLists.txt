@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
-#set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC OFF)
+set(CMAKE_AUTORCC OFF)
 
 # Export library
 add_library(librepcb_library STATIC
@@ -153,9 +153,6 @@ add_library(librepcb_library STATIC
     sym/symbolpingraphicsitem.h
     sym/symbolpinpreviewgraphicsitem.h
     sym/symbolpreviewgraphicsitem.h
-
-    # Resources TODO
-    # ../../../img/images.qrc
 )
 target_include_directories(librepcb_library PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_library

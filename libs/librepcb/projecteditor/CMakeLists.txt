@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC OFF)
 
 # Export library
 add_library(librepcb_projecteditor STATIC
@@ -181,9 +181,6 @@ add_library(librepcb_projecteditor STATIC
     schematiceditor/schematiceditor.ui
     schematiceditor/schematicpagesdock.ui
     schematiceditor/symbolinstancepropertiesdialog.ui
-
-    # Resources TODO
-    # ../../../img/images.qrc
 )
 target_include_directories(librepcb_projecteditor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_projecteditor

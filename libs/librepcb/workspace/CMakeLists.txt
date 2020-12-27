@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC OFF)
 
 # Export library
 add_library(librepcb_workspace STATIC
@@ -38,9 +38,6 @@ add_library(librepcb_workspace STATIC
     # Forms
     settings/workspacesettingsdialog.ui
     workspacechooserdialog.ui
-
-    # Resources TODO
-    # ../../../img/images.qrc
 )
 target_include_directories(librepcb_workspace PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_workspace

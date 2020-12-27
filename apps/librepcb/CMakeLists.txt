@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC ON)
 
 # Executable
 add_executable(librepcb
@@ -42,6 +42,9 @@ add_executable(librepcb
     initializeworkspacewizard/initializeworkspacewizard_choosesettings.ui
     initializeworkspacewizard/initializeworkspacewizard_finalizeimport.ui
     projectlibraryupdater/projectlibraryupdater.ui
+
+    # Resources
+    ../../img/images.qrc
 )
 target_include_directories(librepcb PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../libs")
 target_link_libraries(librepcb

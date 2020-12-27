@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC OFF)
 
 # Export library
 add_library(librepcb_libraryeditor STATIC
@@ -208,9 +208,6 @@ add_library(librepcb_libraryeditor STATIC
     pkgcat/packagecategoryeditorwidget.ui
     sym/dialogs/symbolpinpropertiesdialog.ui
     sym/symboleditorwidget.ui
-
-    # Resources TODO
-    # ../../../img/images.qrc
 )
 target_include_directories(librepcb_libraryeditor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_libraryeditor

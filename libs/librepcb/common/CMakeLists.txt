@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC OFF)
 
 # By default, LibrePCB is built as a "dev build", meaning that the git commit hash is embedded
 # into the binary and that the binary uses the shared resources from the source tree (using
@@ -337,10 +337,6 @@ add_library(librepcb_common STATIC
     widgets/unsignedlengthedit.h
     widgets/unsignedratioedit.h
     widgets/valignactiongroup.h
-
-    #
-    #    # Resources TODO
-    #    ../../../img/images.qrc
 )
 target_include_directories(librepcb_common PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_common

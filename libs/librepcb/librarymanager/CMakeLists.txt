@@ -1,7 +1,7 @@
 # Enable Qt MOC/UIC/RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC OFF)
 
 # Export library
 add_library(librepcb_librarymanager STATIC
@@ -27,9 +27,6 @@ add_library(librepcb_librarymanager STATIC
     librarylistwidgetitem.ui
     librarymanager.ui
     repositorylibrarylistwidgetitem.ui
-
-    # Resources TODO
-    # ../../../img/images.qrc
 )
 target_include_directories(librepcb_librarymanager PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_librarymanager
