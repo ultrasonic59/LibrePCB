@@ -62,4 +62,5 @@ add_subdirectory(libs/librepcb/librarymanager)
 
 # Add apps
 add_subdirectory(apps/librepcb)
+add_subdirectory(apps/librepcb-cli)
 add_subdirectory(apps/UuidGenerator)
