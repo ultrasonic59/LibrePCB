@@ -265,11 +265,17 @@ add_library(librepcb_project STATIC
 )
 target_include_directories(librepcb_project PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_project
-    Qt::Widgets
-    Qt::PrintSupport
+    # LibrePCB
+    LibrePCB::Library
+
+    # Third party
     TypeSafe::TypeSafe
     DelaunayTriangulation::DelaunayTriangulation
     Optional::Optional
+
+    # Qt
+    Qt::Widgets
+    Qt::PrintSupport
 )
 
 # Alias to namespaced variant

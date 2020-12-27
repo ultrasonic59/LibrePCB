@@ -187,11 +187,17 @@ add_library(librepcb_projecteditor STATIC
 )
 target_include_directories(librepcb_projecteditor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_projecteditor
+    # LibrePCB
+    LibrePCB::Workspace
+
+    # Third party
+    TypeSafe::TypeSafe
+    Optional::Optional
+
+    # Qt
     Qt::PrintSupport
     Qt::Svg
     Qt::Widgets
-    TypeSafe::TypeSafe
-    Optional::Optional
 )
 
 # Alias to namespaced variant

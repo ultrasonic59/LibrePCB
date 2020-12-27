@@ -44,11 +44,16 @@ add_library(librepcb_workspace STATIC
 )
 target_include_directories(librepcb_workspace PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_workspace
+    # LibrePCB
+    LibrePCB::Project
+
+    # Third party
+    TypeSafe::TypeSafe
+    Optional::Optional
+
+    # Qt
     Qt::Sql
     Qt::Widgets
-    TypeSafe::TypeSafe
-#    DelaunayTriangulation::DelaunayTriangulation
-    Optional::Optional
 )
 
 # Alias to namespaced variant

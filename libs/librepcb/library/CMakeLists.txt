@@ -159,10 +159,16 @@ add_library(librepcb_library STATIC
 )
 target_include_directories(librepcb_library PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_library
-    Qt::Widgets
-    Qt::PrintSupport
+    # LibrePCB
+    LibrePCB::Common
+
+    # Third party
     TypeSafe::TypeSafe
     Optional::Optional
+
+    # Qt
+    Qt::Widgets
+    Qt::PrintSupport
 )
 
 # Alias to namespaced variant

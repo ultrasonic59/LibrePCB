@@ -344,15 +344,18 @@ add_library(librepcb_common STATIC
 )
 target_include_directories(librepcb_common PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_common
+    # Third party
+    TypeSafe::TypeSafe
+    DelaunayTriangulation::DelaunayTriangulation
+    Optional::Optional
+    QuaZip::QuaZip
+
+    # Qt
     Qt::Network
     Qt::OpenGL
     Qt::PrintSupport
     Qt::Sql
     Qt::Widgets
-    TypeSafe::TypeSafe
-    DelaunayTriangulation::DelaunayTriangulation
-    Optional::Optional
-    QuaZip::QuaZip
 )
 
 # Alias to namespaced variant

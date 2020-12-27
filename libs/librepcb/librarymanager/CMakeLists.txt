@@ -33,10 +33,16 @@ add_library(librepcb_librarymanager STATIC
 )
 target_include_directories(librepcb_librarymanager PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 target_link_libraries(librepcb_librarymanager
-    Qt::Network
-    Qt::Widgets
+    # LibrePCB
+    LibrePCB::LibraryEditor
+
+    # Third party
     TypeSafe::TypeSafe
     Optional::Optional
+
+    # Qt
+    Qt::Network
+    Qt::Widgets
 )
 
 # Alias to namespaced variant
