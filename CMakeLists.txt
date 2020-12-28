@@ -59,8 +59,11 @@ add_subdirectory(libs/librepcb/workspace)
 add_subdirectory(libs/librepcb/projecteditor)
 add_subdirectory(libs/librepcb/libraryeditor)
 add_subdirectory(libs/librepcb/librarymanager)
+add_subdirectory(libs/librepcb/eagleimport)
+add_subdirectory(libs/parseagle)
 
 # Add apps
 add_subdirectory(apps/librepcb)
 add_subdirectory(apps/librepcb-cli)
 add_subdirectory(apps/UuidGenerator)
+add_subdirectory(apps/EagleImport)
