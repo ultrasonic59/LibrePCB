@@ -219,7 +219,7 @@ target_link_libraries(librepcb_libraryeditor
     Optional::Optional
 
     # Qt
-    Qt::Widgets
+    Qt5::Widgets
 )
 
 # Alias to namespaced variant

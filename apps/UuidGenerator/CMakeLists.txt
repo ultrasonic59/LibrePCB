@@ -20,7 +20,7 @@ target_link_libraries(uuid_generator
     LibrePCB::Common
 
     # Qt
-    Qt::Gui
-    Qt::Widgets
+    Qt5::Gui
+    Qt5::Widgets
 )
 set_target_properties(uuid_generator PROPERTIES OUTPUT_NAME uuid-generator)

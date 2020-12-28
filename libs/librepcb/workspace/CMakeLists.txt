@@ -49,8 +49,8 @@ target_link_libraries(librepcb_workspace
     Optional::Optional
 
     # Qt
-    Qt::Sql
-    Qt::Widgets
+    Qt5::Sql
+    Qt5::Widgets
 )
 
 # Alias to namespaced variant

@@ -192,9 +192,9 @@ target_link_libraries(librepcb_projecteditor
     Optional::Optional
 
     # Qt
-    Qt::PrintSupport
-    Qt::Svg
-    Qt::Widgets
+    Qt5::PrintSupport
+    Qt5::Svg
+    Qt5::Widgets
 )
 
 # Alias to namespaced variant

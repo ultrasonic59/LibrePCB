@@ -60,6 +60,6 @@ target_link_libraries(librepcb
     TypeSafe::TypeSafe
     Polyclipping::Polyclipping
 
-    Qt::Gui
-    Qt::Widgets
+    Qt5::Gui
+    Qt5::Widgets
 )

@@ -38,8 +38,8 @@ target_link_libraries(librepcb_librarymanager
     Optional::Optional
 
     # Qt
-    Qt::Network
-    Qt::Widgets
+    Qt5::Network
+    Qt5::Widgets
 )
 
 # Alias to namespaced variant

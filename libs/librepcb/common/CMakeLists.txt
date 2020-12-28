@@ -349,11 +349,11 @@ target_link_libraries(librepcb_common
     Polyclipping::Polyclipping
 
     # Qt
-    Qt::Network
-    Qt::OpenGL
-    Qt::PrintSupport
-    Qt::Sql
-    Qt::Widgets
+    Qt5::Network
+    Qt5::OpenGL
+    Qt5::PrintSupport
+    Qt5::Sql
+    Qt5::Widgets
 )
 
 # Alias to namespaced variant

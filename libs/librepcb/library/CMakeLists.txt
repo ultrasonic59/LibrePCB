@@ -164,8 +164,8 @@ target_link_libraries(librepcb_library
     Optional::Optional
 
     # Qt
-    Qt::Widgets
-    Qt::PrintSupport
+    Qt5::Widgets
+    Qt5::PrintSupport
 )
 
 # Alias to namespaced variant
