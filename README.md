@@ -130,13 +130,15 @@ git submodule update --init --recursive
 ### Building
 
 You can either build LibrePCB using Qt Creator, or you can build on the command
-line using qmake. To build a debug version of LibrePCB with qmake/make:
+line using cmake. To build LibrePCB using cmake/make:
 
 ```bash
 mkdir build && cd build
-qmake -r ../librepcb.pro CONFIG+=debug
+cmake ..
 make -j8
 ```
+
+The binary can then be found in `build/apps/librepcb/`.
 
 For more detailed instructions (including how to set up Qt Creator), see
 https://developers.librepcb.org/d5/d96/doc_building.html
