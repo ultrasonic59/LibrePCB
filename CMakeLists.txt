@@ -15,6 +15,8 @@ project(librepcb
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 # Global options
+option(BUILD_TESTS "Build unit tests." ON)
+option(UNBUNDLE_GTEST "Don't use vendored GoogleTest library." OFF)
 option(UNBUNDLE_MUPARSER "Don't use vendored MuParser library." OFF)
 option(UNBUNDLE_POLYCLIPPING "Don't use vendored Polyclipping library." OFF)
 option(UNBUNDLE_QUAZIP "Don't use vendored QuaZip library." OFF)
@@ -41,7 +43,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Find required Qt packages
-find_package(Qt5 5.2.0 COMPONENTS Widgets Gui OpenGL Network Sql Svg PrintSupport REQUIRED)
+find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui Network OpenGL PrintSupport Sql Svg Widgets REQUIRED)
+if(BUILD_TESTS)
+    find_package(Qt5 5.2.0 COMPONENTS Test REQUIRED)
+endif()
 
 # Find third party libraries
 find_package(TypeSafe REQUIRED)
@@ -50,6 +55,9 @@ find_package(Optional REQUIRED)
 find_package(QuaZip REQUIRED)
 find_package(MuParser REQUIRED)
 find_package(Polyclipping REQUIRED)
+if(BUILD_TESTS)
+    find_package(GTest REQUIRED)
+endif()
 
 # Add libs
 add_subdirectory(libs/librepcb/common)
@@ -67,3 +75,8 @@ add_subdirectory(apps/librepcb)
 add_subdirectory(apps/librepcb-cli)
 add_subdirectory(apps/UuidGenerator)
 add_subdirectory(apps/EagleImport)
+
+# Add unittests
+if(BUILD_TESTS)
+    add_subdirectory(tests/unittests)
+endif()

@@ -349,6 +349,7 @@ target_link_libraries(librepcb_common
     Polyclipping::Polyclipping
 
     # Qt
+    Qt5::Concurrent
     Qt5::Network
     Qt5::OpenGL
     Qt5::PrintSupport
