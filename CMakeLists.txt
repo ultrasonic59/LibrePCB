@@ -44,6 +44,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Include GNU install dirs variables
+include(GNUInstallDirs)
+
 # Find required Qt packages
 find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui Network OpenGL PrintSupport Sql Svg Widgets REQUIRED)
 if(BUILD_TESTS)
@@ -89,3 +92,15 @@ add_subdirectory(apps/EagleImport)
 if(BUILD_TESTS)
     add_subdirectory(tests/unittests)
 endif()
+
+# Install target for shared files
+file(GLOB SHARE_DIRS
+    LIST_DIRECTORIES true
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    share/*
+)
+foreach(d ${SHARE_DIRS})
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${d}")
+        install(DIRECTORY ${d} DESTINATION ${CMAKE_INSTALL_DATAROOTDIR})
+    endif()
+endforeach()

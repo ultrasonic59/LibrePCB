@@ -18,3 +18,11 @@ target_link_libraries(librepcb_cli
     LibrePCB::ProjectEditor
 )
 set_target_properties(librepcb_cli PROPERTIES OUTPUT_NAME librepcb-cli)
+
+# Install target
+install(TARGETS librepcb_cli
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)

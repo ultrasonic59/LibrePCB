@@ -68,3 +68,11 @@ target_link_libraries(librepcb
 if(Qt5Core_VERSION_MAJOR EQUAL 5 AND Qt5Core_VERSION_MINOR LESS 14)
     target_link_libraries(librepcb Hoedown::Hoedown)
 endif()
+
+# Install target
+install(TARGETS librepcb
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
