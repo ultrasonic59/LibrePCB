@@ -17,6 +17,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 # Global options
 option(BUILD_TESTS "Build unit tests." ON)
 option(UNBUNDLE_GTEST "Don't use vendored GoogleTest library." OFF)
+option(UNBUNDLE_HOEDOWN "Don't use vendored Hoedown library." OFF)
 option(UNBUNDLE_MUPARSER "Don't use vendored MuParser library." OFF)
 option(UNBUNDLE_POLYCLIPPING "Don't use vendored Polyclipping library." OFF)
 option(UNBUNDLE_QUAZIP "Don't use vendored QuaZip library." OFF)
@@ -47,6 +48,7 @@ find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui Network OpenGL PrintSupport Sql
 if(BUILD_TESTS)
     find_package(Qt5 5.2.0 COMPONENTS Test REQUIRED)
 endif()
+message(STATUS "Building with Qt${Qt5Core_VERSION}")
 
 # Find third party libraries
 find_package(TypeSafe REQUIRED)
@@ -57,6 +59,11 @@ find_package(MuParser REQUIRED)
 find_package(Polyclipping REQUIRED)
 if(BUILD_TESTS)
     find_package(GTest REQUIRED)
+endif()
+# Hoedown is only needed on Qt <5.14
+if(Qt5Core_VERSION VERSION_LESS 5.14)
+    message(STATUS "Qt <5.14 detected, using Hoedown for markdown support")
+    find_package(Hoedown REQUIRED)
 endif()
 
 # Add libs

@@ -63,3 +63,8 @@ target_link_libraries(librepcb
     Qt5::Gui
     Qt5::Widgets
 )
+
+# Hoedown is only needed on Qt <5.14
+if(Qt5Core_VERSION_MAJOR EQUAL 5 AND Qt5Core_VERSION_MINOR LESS 14)
+    target_link_libraries(librepcb Hoedown::Hoedown)
+endif()
