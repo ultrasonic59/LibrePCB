@@ -43,6 +43,8 @@ jobs:
   - bash: rm -rf libs/hoedown
     displayName: Remove bundled hoedown lib
     condition: and(succeeded(), eq(variables['NO_HOEDOWN'], 'true'))
+  - bash: cmake --version && qmake --version
+    displayName: Show CMake and Qt version
   - bash: ./ci/build_librepcb.sh
     displayName: Build LibrePCB
   - bash: ./ci/build_linux_appimage.sh
