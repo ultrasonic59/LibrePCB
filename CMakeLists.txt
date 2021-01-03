@@ -21,6 +21,9 @@ option(UNBUNDLE_ALL "Don't use any vendored library." OFF)
 # Create a release build by default
 include(DefaultBuildType)
 
+# Force static linking for local libs
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Link dynamically against local libraries." FORCE)
+
 # Auto-include current directory
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
