@@ -47,6 +47,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Include GNU install dirs variables
 include(GNUInstallDirs)
 
+# Workaround for builds on macOS with Qt installed through homebrew
+# https://github.com/Homebrew/homebrew-core/issues/8392#issuecomment-325226494
+if(APPLE AND EXISTS /usr/local/opt/qt5)
+    # Homebrew installs Qt5 (up to at least 5.9.1) in
+    # /usr/local/qt5, ensure it can be found by CMake since
+    # it is not in the default /usr/local prefix.
+    list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+endif()
+
 # Find required Qt packages
 find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui Network OpenGL PrintSupport Sql Svg Widgets REQUIRED)
 if(BUILD_TESTS)
