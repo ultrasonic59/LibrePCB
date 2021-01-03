@@ -17,6 +17,8 @@ jobs:
     displayName: Install Dependencies
   - bash: ./ci/build_librepcb.sh
     displayName: Build LibrePCB
+  - bash: ls -lahR build/install/opt/
+    displayName: Show generated files
   - bash: ./ci/build_mac_bundle.sh
     displayName: Build Bundle
   - bash: ./ci/build_installer.sh

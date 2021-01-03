@@ -47,6 +47,8 @@ jobs:
     displayName: Show CMake and Qt version
   - bash: ./ci/build_librepcb.sh
     displayName: Build LibrePCB
+  - bash: ls -lahR build/install/opt/
+    displayName: Show generated files
   - bash: ./ci/build_linux_appimage.sh
     displayName: Build AppImage
     condition: and(succeeded(), eq(variables['DEPLOY'], 'true'))
