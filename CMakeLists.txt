@@ -57,7 +57,7 @@ if(APPLE AND EXISTS /usr/local/opt/qt5)
 endif()
 
 # Find required Qt packages
-find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui Network OpenGL PrintSupport Sql Svg Widgets REQUIRED)
+find_package(Qt5 5.2.0 COMPONENTS Concurrent Gui LinguistTools Network OpenGL PrintSupport Sql Svg Widgets REQUIRED)
 if(BUILD_TESTS)
     find_package(Qt5 5.2.0 COMPONENTS Test REQUIRED)
 endif()
@@ -102,6 +102,20 @@ if(BUILD_TESTS)
     add_subdirectory(tests/unittests)
 endif()
 
+# Generate translation file target
+set(LIBREPCB_QM_FILES_DIR "${CMAKE_BINARY_DIR}/i18n")
+file(MAKE_DIRECTORY "${LIBREPCB_QM_FILES_DIR}")
+file(GLOB LIBREPCB_TS_FILES RELATIVE ${CMAKE_SOURCE_DIR} i18n/librepcb_*.ts)
+set_source_files_properties(${LIBREPCB_TS_FILES} PROPERTIES OUTPUT_LOCATION "${LIBREPCB_QM_FILES_DIR}")
+if (Qt5_VERSION VERSION_LESS 5.12)
+    # Qt <5.12 doesn't support OPTIONS
+    qt5_add_translation(LIBREPCB_QM_FILES ${LIBREPCB_TS_FILES})
+else()
+    qt5_add_translation(LIBREPCB_QM_FILES ${LIBREPCB_TS_FILES} OPTIONS -silent)
+endif()
+add_custom_target(librepcb_translations DEPENDS ${LIBREPCB_QM_FILES})
+add_dependencies(librepcb librepcb_translations)
+
 # Install target for shared files
 file(GLOB SHARE_DIRS
     LIST_DIRECTORIES true
@@ -113,3 +127,4 @@ foreach(d ${SHARE_DIRS})
         install(DIRECTORY ${d} DESTINATION ${CMAKE_INSTALL_DATAROOTDIR})
     endif()
 endforeach()
+install(DIRECTORY ${CMAKE_BINARY_DIR}/i18n DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/librepcb)
