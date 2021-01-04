@@ -347,6 +347,7 @@ target_link_libraries(librepcb_common
     QuaZip::QuaZip
     MuParser::MuParser
     Polyclipping::Polyclipping
+    FontoBene::FontoBeneQt5
 
     # Qt
     Qt5::Concurrent
