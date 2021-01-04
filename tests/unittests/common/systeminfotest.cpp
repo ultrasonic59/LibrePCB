@@ -43,11 +43,11 @@ protected:
     FilePath generatedDir(qApp->applicationDirPath());
 #if defined(Q_OS_OSX)  // Mac OS X
     return generatedDir.getPathTo(
-        "uuid-generator.app/Contents/MacOS/uuid-generator");
+        "dummy-binary.app/Contents/MacOS/dummy-binary");
 #elif defined(Q_OS_UNIX)  // UNIX/Linux
-    return generatedDir.getPathTo("uuid-generator");
+    return generatedDir.getPathTo("dummy-binary");
 #elif defined(Q_OS_WIN32) || defined(Q_OS_WIN64)  // Windows
-    return generatedDir.getPathTo("uuid-generator.exe");
+    return generatedDir.getPathTo("dummy-binary.exe");
 #else
 #error "Unknown operating system!"
 #endif
@@ -66,7 +66,7 @@ protected:
   }
 
   QString getTestProcessExeName() const noexcept {
-    return QString("uuid-generator");
+    return QString("dummy-binary");
   }
 };
 

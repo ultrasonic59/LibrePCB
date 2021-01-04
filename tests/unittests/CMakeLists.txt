@@ -116,3 +116,7 @@ target_link_libraries(librepcb_unittests
     Threads::Threads
 )
 set_target_properties(librepcb_unittests PROPERTIES OUTPUT_NAME librepcb-unittests)
+
+# Additional executable that's used for process tests
+add_executable(dummy_binary dummy.cpp)
+set_target_properties(dummy_binary PROPERTIES OUTPUT_NAME dummy-binary)
