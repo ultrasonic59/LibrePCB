@@ -36,8 +36,10 @@ namespace librepcb {
  *  Constructors / Destructor
  ******************************************************************************/
 
-NetworkRequestBase::NetworkRequestBase(const QUrl& url) noexcept
+NetworkRequestBase::NetworkRequestBase(const QUrl& url,
+                                       const QByteArray& postData) noexcept
   : mUrl(url),
+    mPostData(postData),
     mExpectedContentSize(-1),
     mStarted(false),
     mAborted(false),
@@ -135,7 +137,11 @@ void NetworkRequestBase::executeRequest() noexcept {
 
   // start request
   mRequest.setUrl(mUrl);
-  mReply.reset(nam->get(mRequest));
+  if (!mPostData.isNull()) {
+    mReply.reset(nam->post(mRequest, mPostData));
+  } else {
+    mReply.reset(nam->get(mRequest));
+  }
   if (mReply.isNull()) {
     finalize(
         tr("GET request failed! Network access manager thread not running?!"));
@@ -143,6 +149,8 @@ void NetworkRequestBase::executeRequest() noexcept {
   }
 
   // connect to signals of reply
+  connect(mReply.data(), &QNetworkReply::uploadProgress, this,
+          &NetworkRequestBase::uploadProgressSlot);
   connect(mReply.data(), &QNetworkReply::readyRead, this,
           &NetworkRequestBase::replyReadyReadSlot);
   connect(mReply.data(),
@@ -155,6 +163,22 @@ void NetworkRequestBase::executeRequest() noexcept {
           &NetworkRequestBase::replyDownloadProgressSlot);
   connect(mReply.data(), &QNetworkReply::finished, this,
           &NetworkRequestBase::replyFinishedSlot);
+}
+
+void NetworkRequestBase::uploadProgressSlot(qint64 bytesSent,
+                                            qint64 bytesTotal) noexcept {
+  Q_ASSERT(QThread::currentThread() == NetworkAccessManager::instance());
+  if (mAborted || mErrored || mFinished) return;
+  if (mReply->attribute(QNetworkRequest::RedirectionTargetAttribute).isValid())
+    return;
+
+  if (bytesTotal < bytesSent) {
+    bytesTotal = bytesSent + 10e6;
+  }
+  int estimatedPercent = (100 * bytesSent) / qMax(bytesTotal, qint64(1));
+  emit progressState(tr("Send data: %1").arg(formatFileSize(bytesSent)));
+  emit progressPercent(estimatedPercent);
+  emit progress(bytesSent, bytesTotal, estimatedPercent);
 }
 
 void NetworkRequestBase::replyReadyReadSlot() noexcept {
