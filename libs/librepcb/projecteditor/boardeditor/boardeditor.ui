@@ -86,6 +86,8 @@
     <addaction name="actionGeneratePickPlace"/>
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
+    <addaction name="actionOrderPcb"/>
+    <addaction name="separator"/>
     <addaction name="actionProjectClose"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -195,6 +197,7 @@
    <addaction name="actionProjectSave"/>
    <addaction name="actionPrint"/>
    <addaction name="actionExportAsPdf"/>
+   <addaction name="actionOrderPcb"/>
    <addaction name="separator"/>
    <addaction name="actionShowControlPanel"/>
    <addaction name="actionShowSchematicEditor"/>
@@ -915,6 +918,15 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionOrderPcb">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/actions/order-pcb.png</normaloff>:/img/actions/order-pcb.png</iconset>
+   </property>
+   <property name="text">
+    <string>Order PCB</string>
    </property>
   </action>
  </widget>
