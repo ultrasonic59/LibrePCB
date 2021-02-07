@@ -86,9 +86,10 @@ curl 'https://api.librepcb.org/api/v1/libraries/v0.1'
 
 Following resources are available:
 
-| Path         | Description                       |
-|--------------|-----------------------------------|
-| [/libraries] | Fetch list of available libraries |
+| Path         | Description                           |
+|--------------|---------------------------------------|
+| [/libraries] | Fetch list of available libraries     |
+| [/order]     | Upload a project to start ordering it |
 
 
 ## Libraries {#doc_server_api_resources_libraries}
@@ -180,5 +181,44 @@ curl 'https://api.librepcb.org/api/v1/libraries/v0.1'
 ]
 ~~~
 
+## Order PCB {#doc_server_api_resources_order}
+
+The resource path `/order` is used to upload a LibrePCB project to start
+ordering the PCB. After the project has been uploaded, the order process
+needs to be continued in the web browser.
+
+The client has to make a POST request with a JSON object containing the
+following data:
+
+| Name    | Type   | Description                                                 |
+|---------|--------|-------------------------------------------------------------|
+| project | string | The whole project as a Base64 encoded `*.lppz` archive      |
+| board   | string | The filepath of the board to be ordered (`null` if unknown) |
+
+The response is a JSON object with the following data (no pagination used):
+
+| Name         | Type    | Description                                          |
+|--------------|---------|------------------------------------------------------|
+| redirect_url | string  | URL to continue the order process in the web browser |
+
+### Example
+
+**Request:**
+
+~~~{.sh}
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"project": "...", "board": "boards/default/board.lp"}' \
+     'https://api.librepcb.org/api/v1/order'
+~~~
+
+**Response:**
+
+~~~{.json}
+{
+  "redirect_url": "https://fab.librepcb.org/nnwyw55pA0Z0sw/",
+}
+~~~
+
 [/libraries]: @ref doc_server_api_resources_libraries
+[/order]: @ref doc_server_api_resources_order
 [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
