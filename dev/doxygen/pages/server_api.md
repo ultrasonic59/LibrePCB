@@ -38,6 +38,14 @@ curl 'https://api.librepcb.org/api/v1/libraries/v0.1'
 ~~~
 
 
+# Landing Page {#doc_server_api_landingpage}
+
+The API server should provide a landing page when opening the `/api` path
+in a web browser. This page may contain information about what features the
+API server provides, and about how the requests are processed (e.g. privacy
+statement).
+
+
 # Localization {#doc_server_api_localization}
 
 In order to get the response in the user's language, the client may set the
