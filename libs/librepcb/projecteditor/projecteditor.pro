@@ -75,6 +75,7 @@ SOURCES += \
     dialogs/addcomponentdialog.cpp \
     dialogs/bomgeneratordialog.cpp \
     dialogs/editnetclassesdialog.cpp \
+    dialogs/orderpcbdialog.cpp \
     dialogs/projectpropertieseditordialog.cpp \
     dialogs/projectsettingsdialog.cpp \
     docks/ercmsgdock.cpp \
@@ -150,6 +151,7 @@ HEADERS += \
     dialogs/addcomponentdialog.h \
     dialogs/bomgeneratordialog.h \
     dialogs/editnetclassesdialog.h \
+    dialogs/orderpcbdialog.h \
     dialogs/projectpropertieseditordialog.h \
     dialogs/projectsettingsdialog.h \
     docks/ercmsgdock.h \
@@ -190,6 +192,7 @@ FORMS += \
     dialogs/addcomponentdialog.ui \
     dialogs/bomgeneratordialog.ui \
     dialogs/editnetclassesdialog.ui \
+    dialogs/orderpcbdialog.ui \
     dialogs/projectpropertieseditordialog.ui \
     dialogs/projectsettingsdialog.ui \
     docks/ercmsgdock.ui \

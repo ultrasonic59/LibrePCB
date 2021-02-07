@@ -24,6 +24,7 @@
 
 #include "boardeditor/boardeditor.h"
 #include "dialogs/editnetclassesdialog.h"
+#include "dialogs/orderpcbdialog.h"
 #include "dialogs/projectsettingsdialog.h"
 #include "schematiceditor/schematiceditor.h"
 
@@ -192,6 +193,12 @@ void ProjectEditor::execLppzExportDialog(QWidget* parent) noexcept {
   } catch (const Exception& e) {
     QMessageBox::critical(parent, tr("Error"), e.getMsg());
   }
+}
+
+void ProjectEditor::execOrderPcbDialog(const Board* board,
+                                       QWidget* parent) noexcept {
+  OrderPcbDialog dialog(mWorkspace, mProject, board, parent);
+  dialog.exec();
 }
 
 bool ProjectEditor::saveProject() noexcept {
