@@ -9,6 +9,7 @@ jobs:
       CC: 'ccache gcc'
       CXX: 'ccache g++'
       CCACHE_DIR: $(Pipeline.Workspace)/.ccache
+      CMAKE_GENERATOR: 'MinGW Makefiles'
     strategy:
       matrix:
         Qt_5_15_MinGW_32bit:
