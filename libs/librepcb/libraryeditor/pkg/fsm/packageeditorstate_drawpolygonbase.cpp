@@ -100,7 +100,7 @@ bool PackageEditorState_DrawPolygonBase::entry() noexcept {
   mContext.commandToolBar.addWidget(std::move(edtLineWidth));
 
   if ((mMode == Mode::LINE) || (mMode == Mode::POLYGON)) {
-    mContext.commandToolBar.addLabel(tr("Angle:"), 10);
+    mContext.commandToolBar.addLabel(tr("Arc Angle:"), 10);
     std::unique_ptr<AngleEdit> edtAngle(new AngleEdit());
     edtAngle->setSingleStep(90.0);  // [°]
     edtAngle->setValue(mLastAngle);
