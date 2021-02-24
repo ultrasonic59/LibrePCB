@@ -53,21 +53,21 @@ SymbolEditorState_DrawPolygonBase::SymbolEditorState_DrawPolygonBase(
     const Context& context, Mode mode) noexcept
   : SymbolEditorState(context),
     mMode(mode),
+    mIsUndoCmdActive(false),
     mCurrentPolygon(nullptr),
+    mArcInSecondState(false),
     mCurrentGraphicsItem(nullptr),
     mLastLayerName(GraphicsLayer::sSymbolOutlines),  // Most important layer
     mLastLineWidth(200000),  // Typical width according library conventions
     mLastAngle(0),
     mLastFill(false),  // Fill is needed very rarely
-    mLastGrabArea(mode != Mode::LINE)  // Most symbol outlines are grab areas
+    mLastGrabArea((mode != Mode::LINE) &&
+                  (mode != Mode::ARC))  // Most symbol outlines are grab areas
 {
 }
 
 SymbolEditorState_DrawPolygonBase::
     ~SymbolEditorState_DrawPolygonBase() noexcept {
-  Q_ASSERT(mEditCmd.isNull());
-  Q_ASSERT(mCurrentPolygon == nullptr);
-  Q_ASSERT(mCurrentGraphicsItem == nullptr);
 }
 
 /*******************************************************************************
@@ -75,6 +75,8 @@ SymbolEditorState_DrawPolygonBase::
  ******************************************************************************/
 
 bool SymbolEditorState_DrawPolygonBase::entry() noexcept {
+  Q_ASSERT(!mIsUndoCmdActive);
+
   mContext.graphicsScene.setSelectionArea(QPainterPath());  // clear selection
   mContext.graphicsView.setCursor(Qt::CrossCursor);
 
@@ -98,7 +100,7 @@ bool SymbolEditorState_DrawPolygonBase::entry() noexcept {
           &SymbolEditorState_DrawPolygonBase::lineWidthEditValueChanged);
   mContext.commandToolBar.addWidget(std::move(edtLineWidth));
 
-  if (mMode != Mode::RECT) {
+  if ((mMode == Mode::LINE) || (mMode == Mode::POLYGON)) {
     mContext.commandToolBar.addLabel(tr("Angle:"), 10);
     std::unique_ptr<AngleEdit> edtAngle(new AngleEdit());
     edtAngle->setSingleStep(90.0);  // [°]
@@ -108,7 +110,7 @@ bool SymbolEditorState_DrawPolygonBase::entry() noexcept {
     mContext.commandToolBar.addWidget(std::move(edtAngle));
   }
 
-  if (mMode != Mode::LINE) {
+  if ((mMode == Mode::RECT) || (mMode == Mode::POLYGON)) {
     std::unique_ptr<QCheckBox> fillCheckBox(new QCheckBox(tr("Fill")));
     fillCheckBox->setChecked(mLastFill);
     connect(fillCheckBox.get(), &QCheckBox::toggled, this,
@@ -116,7 +118,7 @@ bool SymbolEditorState_DrawPolygonBase::entry() noexcept {
     mContext.commandToolBar.addWidget(std::move(fillCheckBox), 10);
   }
 
-  if (mMode != Mode::LINE) {
+  if ((mMode == Mode::RECT) || (mMode == Mode::POLYGON)) {
     std::unique_ptr<QCheckBox> grabAreaCheckBox(new QCheckBox(tr("Grab Area")));
     grabAreaCheckBox->setChecked(mLastGrabArea);
     connect(grabAreaCheckBox.get(), &QCheckBox::toggled, this,
@@ -128,7 +130,7 @@ bool SymbolEditorState_DrawPolygonBase::entry() noexcept {
 }
 
 bool SymbolEditorState_DrawPolygonBase::exit() noexcept {
-  if (mCurrentPolygon && (!abort())) {
+  if (!abort()) {
     return false;
   }
 
@@ -145,7 +147,7 @@ bool SymbolEditorState_DrawPolygonBase::exit() noexcept {
 
 bool SymbolEditorState_DrawPolygonBase::processGraphicsSceneMouseMoved(
     QGraphicsSceneMouseEvent& e) noexcept {
-  if (mCurrentPolygon) {
+  if (mIsUndoCmdActive) {
     Point currentPos =
         Point::fromPx(e.scenePos()).mappedToGrid(getGridInterval());
     return updateCurrentPosition(currentPos);
@@ -159,15 +161,8 @@ bool SymbolEditorState_DrawPolygonBase::
         QGraphicsSceneMouseEvent& e) noexcept {
   Point currentPos =
       Point::fromPx(e.scenePos()).mappedToGrid(getGridInterval());
-  if (mCurrentPolygon) {
-    Point startPos = mCurrentPolygon->getPath().getVertices().first().getPos();
-    if (currentPos == mSegmentStartPos) {
-      return abort();
-    } else if ((currentPos == startPos) || (mMode == Mode::RECT)) {
-      return addNextSegment(currentPos) && abort();
-    } else {
-      return addNextSegment(currentPos);
-    }
+  if (mIsUndoCmdActive) {
+    return addNextSegment(currentPos);
   } else {
     return start(currentPos);
   }
@@ -181,7 +176,7 @@ bool SymbolEditorState_DrawPolygonBase::
 }
 
 bool SymbolEditorState_DrawPolygonBase::processAbortCommand() noexcept {
-  if (mCurrentPolygon) {
+  if (mIsUndoCmdActive) {
     return abort();
   } else {
     return false;
@@ -194,15 +189,27 @@ bool SymbolEditorState_DrawPolygonBase::processAbortCommand() noexcept {
 
 bool SymbolEditorState_DrawPolygonBase::start(const Point& pos) noexcept {
   try {
-    // create path
-    Path path;
-    for (int i = 0; i < ((mMode == Mode::RECT) ? 5 : 2); ++i) {
-      path.addVertex(pos, (i == 0) ? mLastAngle : Angle::deg0());
+    // Reset members.
+    if (mMode == Mode::ARC) {
+      mLastAngle = Angle(0);
+      mArcInSecondState = false;
     }
 
-    // add polygon
-    mSegmentStartPos = pos;
+    // Create inital path.
+    Path path;
+    if (mMode == Mode::ARC) {
+      for (int i = 0; i < 4; ++i) {
+        path.addVertex(pos);
+      }
+    } else {
+      for (int i = 0; i < ((mMode == Mode::RECT) ? 5 : 2); ++i) {
+        path.addVertex(pos, (i == 0) ? mLastAngle : Angle::deg0());
+      }
+    }
+
+    // Add polygon.
     mContext.undoStack.beginCmdGroup(tr("Add symbol polygon"));
+    mIsUndoCmdActive = true;
     mCurrentPolygon.reset(new Polygon(Uuid::createRandom(), mLastLayerName,
                                       mLastLineWidth, mLastFill, mLastGrabArea,
                                       path));
@@ -216,23 +223,28 @@ bool SymbolEditorState_DrawPolygonBase::start(const Point& pos) noexcept {
     return true;
   } catch (const Exception& e) {
     QMessageBox::critical(&mContext.editorWidget, tr("Error"), e.getMsg());
-    mCurrentGraphicsItem = nullptr;
-    mEditCmd.reset();
-    mCurrentPolygon.reset();
+    abort(false);
     return false;
   }
 }
 
-bool SymbolEditorState_DrawPolygonBase::abort() noexcept {
+bool SymbolEditorState_DrawPolygonBase::abort(bool showErrMsgBox) noexcept {
   try {
-    mCurrentGraphicsItem->setSelected(false);
-    mCurrentGraphicsItem = nullptr;
+    if (mCurrentGraphicsItem) {
+      mCurrentGraphicsItem->setSelected(false);
+      mCurrentGraphicsItem = nullptr;
+    }
     mEditCmd.reset();
     mCurrentPolygon.reset();
-    mContext.undoStack.abortCmdGroup();
+    if (mIsUndoCmdActive) {
+      mContext.undoStack.abortCmdGroup();
+      mIsUndoCmdActive = false;
+    }
     return true;
   } catch (const Exception& e) {
-    QMessageBox::critical(&mContext.editorWidget, tr("Error"), e.getMsg());
+    if (showErrMsgBox) {
+      QMessageBox::critical(&mContext.editorWidget, tr("Error"), e.getMsg());
+    }
     return false;
   }
 }
@@ -240,19 +252,57 @@ bool SymbolEditorState_DrawPolygonBase::abort() noexcept {
 bool SymbolEditorState_DrawPolygonBase::addNextSegment(
     const Point& pos) noexcept {
   try {
-    // commit current
+    // Make sure the path is up to date for the current cursor position.
     updateCurrentPosition(pos);
+
+    // If no line was drawn, abort now.
+    QVector<Vertex> vertices = mCurrentPolygon->getPath().getVertices();
+    bool isEmpty = false;
+    if (mMode == Mode::RECT) {
+      // Take rect size into account.
+      Point size =
+          vertices[vertices.count() - 3].getPos() - vertices[0].getPos();
+      isEmpty = (size.getX() == 0) || (size.getY() == 0);
+    } else {
+      // Only take the last line segment into account.
+      isEmpty = (vertices[vertices.count() - 1].getPos() ==
+                 vertices[vertices.count() - 2].getPos());
+    }
+    if (isEmpty) {
+      return abort();
+    }
+
+    // If the first half of an arc was drawn, start the second half now.
+    if ((mMode == Mode::ARC) && (!mArcInSecondState)) {
+      mArcInSecondState = true;
+      updateCurrentPosition(pos);
+      return true;
+    }
+
+    // If the second half of an arc was drawn, remove the segment from its
+    // center.
+    if (mMode == Mode::ARC) {
+      vertices.removeFirst();
+    }
+
+    // Commit current polygon segment.
+    mEditCmd->setPath(Path(vertices), true);
     mContext.undoStack.appendToCmdGroup(mEditCmd.take());
     mContext.undoStack.commitCmdGroup();
+    mIsUndoCmdActive = false;
 
-    // add next
-    mSegmentStartPos = pos;
+    // If the polygon is completed, abort now.
+    if ((mMode == Mode::RECT) || (mMode == Mode::ARC)) {
+      return abort();
+    }
+
+    // Add next polygon segment.
     mContext.undoStack.beginCmdGroup(tr("Add symbol polygon"));
+    mIsUndoCmdActive = true;
     mEditCmd.reset(new CmdPolygonEdit(*mCurrentPolygon));
-    Path newPath = mCurrentPolygon->getPath();
-    newPath.getVertices().last().setAngle(mLastAngle);
-    newPath.addVertex(pos, Angle::deg0());
-    mEditCmd->setPath(newPath, true);
+    vertices.last().setAngle(mLastAngle);
+    vertices.append(Vertex(pos, Angle::deg0()));
+    mEditCmd->setPath(Path(vertices), true);
     return true;
   } catch (const Exception& e) {
     QMessageBox::critical(&mContext.editorWidget, tr("Error"), e.getMsg());
@@ -272,6 +322,45 @@ bool SymbolEditorState_DrawPolygonBase::updateCurrentPosition(
     vertices[count - 3].setPos(pos);
     vertices[count - 2].setPos(
         Point(vertices[count - 5].getPos().getX(), pos.getY()));
+  } else if (mMode == Mode::ARC) {
+    Point center = vertices[0].getPos();
+    if (!mArcInSecondState) {
+      // Draw 2 arcs with 180° each to result in an accurate 360° circle.
+      // This circle helps the user to place the start point of the arc.
+      Q_ASSERT(count == 4);
+      vertices[3] = Vertex(pos);
+      vertices[2] =
+          Vertex(pos.rotated(Angle::deg180(), center), Angle::deg180());
+      vertices[1] = Vertex(pos, Angle::deg180());
+    } else {
+      // Now place the end point of the arc. The only degree of freedom is the
+      // angle. This angle is determined by the current cursor position and
+      // the position where the cursor was before to determine the arc's
+      // direction.
+      Point arcStart = vertices[1].getPos();
+      Angle angle = Toolbox::arcAngle(arcStart, pos, center).mappedTo180deg();
+      if (((mLastAngle > Angle::deg90()) && (angle < 0)) ||
+          ((mLastAngle < -Angle::deg90()) && (angle > 0))) {
+        angle.invert();
+      }
+      // Remove the old arc segments.
+      while (vertices.count() > 2) {
+        vertices.removeLast();
+      }
+      if (angle.abs() > Angle::deg270()) {
+        // The angle is > 270°, so let's create two separate arc segments to
+        // avoid mathematical inaccuracy due to too high angle.
+        Angle halfAngle = angle / 2;
+        vertices[1].setAngle(angle - halfAngle);
+        vertices.append(Vertex(arcStart.rotated(halfAngle, center), halfAngle));
+        vertices.append(Vertex(arcStart.rotated(angle, center)));
+      } else {
+        // The angle is small enough to be implemented by a single arc segment.
+        vertices[1].setAngle(angle);
+        vertices.append(Vertex(arcStart.rotated(angle, center)));
+      }
+      mLastAngle = angle;
+    }
   } else {
     Q_ASSERT(count >= 2);
     vertices[count - 1].setPos(pos);

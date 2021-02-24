@@ -102,6 +102,7 @@ SOURCES += \
     sym/fsm/symboleditorstate_addnames.cpp \
     sym/fsm/symboleditorstate_addpins.cpp \
     sym/fsm/symboleditorstate_addvalues.cpp \
+    sym/fsm/symboleditorstate_drawarc.cpp \
     sym/fsm/symboleditorstate_drawcircle.cpp \
     sym/fsm/symboleditorstate_drawline.cpp \
     sym/fsm/symboleditorstate_drawpolygon.cpp \
@@ -191,6 +192,7 @@ HEADERS += \
     sym/fsm/symboleditorstate_addnames.h \
     sym/fsm/symboleditorstate_addpins.h \
     sym/fsm/symboleditorstate_addvalues.h \
+    sym/fsm/symboleditorstate_drawarc.h \
     sym/fsm/symboleditorstate_drawcircle.h \
     sym/fsm/symboleditorstate_drawline.h \
     sym/fsm/symboleditorstate_drawpolygon.h \
