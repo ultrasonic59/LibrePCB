@@ -78,6 +78,7 @@ public:
     NONE,
     SELECT,
     DRAW_LINE,
+    DRAW_ARC,
     DRAW_RECT,
     DRAW_POLYGON,
     DRAW_CIRCLE,

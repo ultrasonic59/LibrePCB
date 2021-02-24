@@ -241,6 +241,7 @@
    </attribute>
    <addaction name="actionToolSelect"/>
    <addaction name="actionDrawLine"/>
+   <addaction name="actionDrawArc"/>
    <addaction name="actionDrawRect"/>
    <addaction name="actionDrawPolygon"/>
    <addaction name="actionDrawCircle"/>
@@ -713,6 +714,18 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionDrawArc">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/actions/draw_arc.png</normaloff>:/img/actions/draw_arc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Draw Arc</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true"/>
    </property>
   </action>
  </widget>
