@@ -56,7 +56,7 @@ class PackageEditorState_DrawPolygonBase : public PackageEditorState {
 
 public:
   // Types
-  enum class Mode { LINE, RECT, POLYGON };
+  enum class Mode { LINE, ARC, RECT, POLYGON };
 
   // Constructors / Destructor
   PackageEditorState_DrawPolygonBase() = delete;
@@ -84,7 +84,7 @@ public:
 
 private:  // Methods
   bool start(const Point& pos) noexcept;
-  bool abort() noexcept;
+  bool abort(bool showErrMsgBox = true) noexcept;
   bool addNextSegment(const Point& pos) noexcept;
   bool updateCurrentPosition(const Point& pos) noexcept;
 
@@ -96,9 +96,11 @@ private:  // Methods
 
 private:  // Types / Data
   Mode mMode;
+  bool mIsUndoCmdActive;
   QScopedPointer<CmdPolygonEdit> mEditCmd;
   std::shared_ptr<Polygon> mCurrentPolygon;
-  Point mSegmentStartPos;
+  Point mLastCursorPosition;
+  bool mArcInSecondState;
   PolygonGraphicsItem* mCurrentGraphicsItem;
 
   // parameter memory

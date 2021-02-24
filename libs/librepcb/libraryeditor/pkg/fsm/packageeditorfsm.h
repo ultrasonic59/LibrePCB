@@ -72,6 +72,7 @@ private:  // Types
     ADD_NAMES,
     ADD_VALUES,
     DRAW_LINE,
+    DRAW_ARC,
     DRAW_RECT,
     DRAW_POLYGON,
     DRAW_CIRCLE,
@@ -131,6 +132,7 @@ public:
   bool processStartAddingNames() noexcept;
   bool processStartAddingValues() noexcept;
   bool processStartDrawLines() noexcept;
+  bool processStartDrawArcs() noexcept;
   bool processStartDrawRects() noexcept;
   bool processStartDrawPolygons() noexcept;
   bool processStartDrawCircles() noexcept;

@@ -26,6 +26,7 @@
 #include "packageeditorstate_addnames.h"
 #include "packageeditorstate_addpads.h"
 #include "packageeditorstate_addvalues.h"
+#include "packageeditorstate_drawarc.h"
 #include "packageeditorstate_drawcircle.h"
 #include "packageeditorstate_drawline.h"
 #include "packageeditorstate_drawpolygon.h"
@@ -64,6 +65,7 @@ PackageEditorFsm::PackageEditorFsm(const Context& context) noexcept
   mStates.insert(State::ADD_NAMES, new PackageEditorState_AddNames(mContext));
   mStates.insert(State::ADD_VALUES, new PackageEditorState_AddValues(mContext));
   mStates.insert(State::DRAW_LINE, new PackageEditorState_DrawLine(mContext));
+  mStates.insert(State::DRAW_ARC, new PackageEditorState_DrawArc(mContext));
   mStates.insert(State::DRAW_RECT, new PackageEditorState_DrawRect(mContext));
   mStates.insert(State::DRAW_POLYGON,
                  new PackageEditorState_DrawPolygon(mContext));
@@ -100,6 +102,8 @@ EditorWidgetBase::Tool PackageEditorFsm::getCurrentTool() const noexcept {
       return EditorWidgetBase::Tool::ADD_VALUES;
     case State::DRAW_LINE:
       return EditorWidgetBase::Tool::DRAW_LINE;
+    case State::DRAW_ARC:
+      return EditorWidgetBase::Tool::DRAW_ARC;
     case State::DRAW_RECT:
       return EditorWidgetBase::Tool::DRAW_RECT;
     case State::DRAW_POLYGON:
@@ -320,6 +324,10 @@ bool PackageEditorFsm::processStartAddingValues() noexcept {
 
 bool PackageEditorFsm::processStartDrawLines() noexcept {
   return setNextState(State::DRAW_LINE);
+}
+
+bool PackageEditorFsm::processStartDrawArcs() noexcept {
+  return setNextState(State::DRAW_ARC);
 }
 
 bool PackageEditorFsm::processStartDrawRects() noexcept {

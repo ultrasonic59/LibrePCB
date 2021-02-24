@@ -77,6 +77,7 @@ SOURCES += \
     pkg/fsm/packageeditorstate_addnames.cpp \
     pkg/fsm/packageeditorstate_addpads.cpp \
     pkg/fsm/packageeditorstate_addvalues.cpp \
+    pkg/fsm/packageeditorstate_drawarc.cpp \
     pkg/fsm/packageeditorstate_drawcircle.cpp \
     pkg/fsm/packageeditorstate_drawline.cpp \
     pkg/fsm/packageeditorstate_drawpolygon.cpp \
@@ -165,6 +166,7 @@ HEADERS += \
     pkg/fsm/packageeditorstate_addnames.h \
     pkg/fsm/packageeditorstate_addpads.h \
     pkg/fsm/packageeditorstate_addvalues.h \
+    pkg/fsm/packageeditorstate_drawarc.h \
     pkg/fsm/packageeditorstate_drawcircle.h \
     pkg/fsm/packageeditorstate_drawline.h \
     pkg/fsm/packageeditorstate_drawpolygon.h \
