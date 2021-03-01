@@ -227,21 +227,17 @@ TEST_F(DirectoryLockTest, testTryLockWithoutArgument) {
 }
 
 TEST_F(DirectoryLockTest, testTryLockUnlockedDir) {
-  bool wasStale = true;
   DirectoryLock lock(mTempDir);
-  lock.tryLock(&wasStale);
+  lock.tryLock();
   EXPECT_EQ(DirectoryLock::LockStatus::LockedByThisApp, lock.getStatus());
-  EXPECT_FALSE(wasStale);
 }
 
 TEST_F(DirectoryLockTest, testTryLockLockedDir) {
-  bool wasStale = true;
   DirectoryLock lock1(mTempDir);
   DirectoryLock lock2(mTempDir);
-  lock1.tryLock(&wasStale);
+  lock1.tryLock();
   EXPECT_EQ(DirectoryLock::LockStatus::LockedByThisApp, lock1.getStatus());
   EXPECT_THROW(lock2.tryLock(), Exception);
-  EXPECT_FALSE(wasStale);
 }
 
 TEST_F(DirectoryLockTest, testUnlockIfLockedOnUnlockedDir) {
@@ -285,9 +281,7 @@ TEST_F(DirectoryLockTest, testStaleLock) {
   EXPECT_EQ(DirectoryLock::LockStatus::StaleLock, lock.getStatus());
 
   // try to get the lock
-  bool wasStale = false;
-  lock.tryLock(&wasStale);
-  ASSERT_TRUE(wasStale);
+  lock.tryLock();
 }
 #endif
 
